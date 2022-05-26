@@ -5,7 +5,7 @@ NODE Main
 
 :LOOP
 ECHO Le bot redémarrera dans 5 secondes, appuyez sur N pour annuler.
-choice /t 5 /c yn /cs /d y /m "Démarrer le bot ?"
+CHOICE /t 5 /c yn /cs /d y /m "Démarrer le bot ?"
 IF errorlevel 3 GOTO :YES
 IF errorlevel 2 GOTO :NO
 IF errorlevel 1 GOTO :YES
