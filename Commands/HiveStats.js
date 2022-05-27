@@ -186,10 +186,10 @@ module.exports = {
                             }
                         }
                     })
-                } else if (Year && !Month) {
-                    Embed.setColor("RED").setDescription("Vous ne pouvez pas mentionner une année sans préciser un mois.");
-                } else if (!Year && Month) {
-                    Embed.setColor("RED").setDescription("\"Vous ne pouvez pas mentionner un mois sans préciser une année.");
+                } else if (Year && !Month || !Year && Month) {
+                    Embed
+                        .setColor("RED")
+                        .setDescription("Les options `year` et `month` dépendent l'un de l'autre. Par conséquent, vous ne pouvez pas utiliser l'un sans l'autre.");
                 } else {
                     await Hive.getMonthlyPlayerStats(Player, Game).then(result => {
                         switch (Game) {
@@ -229,7 +229,6 @@ module.exports = {
                                         "**Parties perdues :** " + result.games_lost + "\n" +
                                         "**Kills :** " + result.kills + "\n" +
                                         "**Morts :** " + result.deaths + "\n" +
-                                        "**Final Kills :** " + result.final_kills + "\n" +
                                         "**Checkpoints :** " + result.checkpoints
                                     );
                                 break;
@@ -276,7 +275,7 @@ module.exports = {
                                 Embed
                                     .setTitle("**" + Player + "・Sky Wars**")
                                     .setURL("https://hivetools.app/search/" + Player)
-                                    .setThumbnail("https://cdn.discordapp.com/attachments/868676441087299635/979227497210216529/TreasureWars.png")
+                                    .setThumbnail("https://cdn.discordapp.com/attachments/868676441087299635/979569526322659389/SkyWars.png")
                                     .setDescription("**__Période :__** " + Time + "\n\n" +
                                         "**Classement :** " + result.human_index + "\n" +
                                         "**EXP sans boost :** " + result.uncapped_xp + "\n" +
@@ -301,6 +300,8 @@ module.exports = {
             case "all": {
                 Time = "All-Time"
                 await Hive.getAllTimePlayerStats(Player, Game).then(result => {
+                    if (!result.human_index) result.human_index = "Non précisé";
+                    if (!result.uncapped_xp) result.uncapped_xp = "Non précisé";
                     switch (Game) {
                         case "wars": {
                             Embed
@@ -321,7 +322,84 @@ module.exports = {
                                     "**KDR :** " + result.kdr + "\n" +
                                     "**FKDR :** " + result.fkdr + "\n" +
                                     "**Trésors détruits :** " + result.treasure_destroyed
+                                )
+                            break;
+                        }
+                        case "dr": {
+                            Embed
+                                .setTitle("**" + Player + "・Death Run**")
+                                .setURL("https://hivetools.app/search/" + Player)
+                                .setThumbnail("https://cdn.discordapp.com/attachments/868676441087299635/979227497449275452/DeathRun.png")
+                                .setDescription("**__Période :__** " + Time + "\n\n" +
+                                    "**Classement :** " + result.human_index + "\n" +
+                                    "**EXP sans boost :** " + result.uncapped_xp + "\n" +
+                                    "**EXP :** " + result.xp + "\n" +
+                                    "**Parties jouées :** " + result.played + "\n" +
+                                    "**Parties gagnées :** " + result.victories + "\n" +
+                                    "**Parties perdues :** " + result.games_lost + "\n" +
+                                    "**Kills :** " + result.kills + "\n" +
+                                    "**Morts :** " + result.deaths + "\n" +
+                                    "**Checkpoints :** " + result.checkpoints
                                 );
+                            break;
+                        }
+                        case "murder": {
+                            Embed
+                                .setTitle("**" + Player + "・Murder Mystery**")
+                                .setURL("https://hivetools.app/search/" + Player)
+                                .setThumbnail("https://cdn.discordapp.com/attachments/868676441087299635/979227496614604811/MurderMystery.png")
+                                .setDescription("**__Période :__** " + Time + "\n\n" +
+                                    "**Classement :** " + result.human_index + "\n" +
+                                    "**EXP sans boost :** " + result.uncapped_xp + "\n" +
+                                    "**EXP :** " + result.xp + "\n" +
+                                    "**Parties jouées :** " + result.played + "\n" +
+                                    "**Parties gagnées :** " + result.victories + "\n" +
+                                    "**Parties perdues :** " + result.games_lost + "\n" +
+                                    "**Assassins :** " + result.murders + "\n" +
+                                    "**Kills en assassin :** " + result.murderer_eliminations + "\n" +
+                                    "**Pièces amassées :** " + result.coins
+                                );
+                            break;
+                        }
+                        case "sg": {
+                            Embed
+                                .setTitle("**" + Player + "・Survival Games**")
+                                .setURL("https://hivetools.app/search/" + Player)
+                                .setThumbnail("https://cdn.discordapp.com/attachments/868676441087299635/979227497000488980/SurvivalGames.png")
+                                .setDescription("**__Période :__** " + Time + "\n\n" +
+                                    "**Classement :** " + result.human_index + "\n" +
+                                    "**EXP sans boost :** " + result.uncapped_xp + "\n" +
+                                    "**EXP :** " + result.xp + "\n" +
+                                    "**Parties jouées :** " + result.played + "\n" +
+                                    "**Parties gagnées :** " + result.victories + "\n" +
+                                    "**Parties perdues :** " + result.games_lost + "\n" +
+                                    "**Winrate :** " + result.win_percentage + "\n" +
+                                    "**Kills :** " + result.kills + "\n" +
+                                    "**Coffres ouverts :** " + result.crates + "\n" +
+                                    "**Deathmatches :** " + result.deathmatches + "\n" +
+                                    "**Cows :** " + result.cows
+                                );
+                            break;
+                        }
+                        case "sky": {
+                            Embed
+                                .setTitle("**" + Player + "・Sky Wars**")
+                                .setURL("https://hivetools.app/search/" + Player)
+                                .setThumbnail("https://cdn.discordapp.com/attachments/868676441087299635/979569526322659389/SkyWars.png")
+                                .setDescription("**__Période :__** " + Time + "\n\n" +
+                                    "**Classement :** " + result.human_index + "\n" +
+                                    "**EXP sans boost :** " + result.uncapped_xp + "\n" +
+                                    "**EXP :** " + result.xp + "\n" +
+                                    "**Parties jouées :** " + result.played + "\n" +
+                                    "**Parties gagnées :** " + result.victories + "\n" +
+                                    "**Parties perdues :** " + result.games_lost + "\n" +
+                                    "**Winrate :** " + result.win_percentage + "\n" +
+                                    "**Kills :** " + result.kills + "\n" +
+                                    "**Coffres mystères détruits :** " + result.mystery_chests_destroyed + "\n" +
+                                    "**Minerais minés :** " + result.ores_mined + "\n" +
+                                    "**Sorts utilités :** " + result.spells_used
+                                );
+                            break;
                         }
                     }
                 })
