@@ -11,7 +11,7 @@
     "distube": "^3.3.3",
     "ffmpeg-static": "^4.4.1",
     "glob": "^7.2.0",
-    "hive-tools-wrapper": "^2.0.7",
+    "hive-tools-wrapper": "^2.1.0",
     "libsodium-wrappers": "^0.7.10",
     "mongoose": "^6.2.9",
     "ms": "^2.1.3",

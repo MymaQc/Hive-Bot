@@ -10,6 +10,6 @@ module.exports = {
      * @param {Client} client
      */
     execute(client) {
-        client.user.setStatus('dnd');
+        client.user.setStatus('online');
     }
 }
