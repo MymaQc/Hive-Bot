@@ -10,6 +10,6 @@ module.exports = {
      * @param {Client} client
      */
     execute(client) {
-        client.user.setStatus('online');
+        client.user.setPresence({ activities: [{ type: 'PLAYING', name: "Hive 🐝" }], status: 'online'});
     }
 }

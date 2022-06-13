@@ -70,10 +70,9 @@ module.exports = {
     }],
     /**
      * @param interaction
-     * @param client
      * @returns {Promise<void>}
      */
-    async execute(interaction, client) {
+    async execute(interaction) {
         const { options } = interaction;
 
         const Player = options.getString("player");
@@ -103,6 +102,12 @@ module.exports = {
                 case "12": { Month = "Décembre"; break; }
             }
             return Month
+        }
+
+        if (Year && !Month || !Year && Month) {
+            Embed
+                .setColor("RED")
+                .setDescription("Les options `year` et `month` dépendent l'un de l'autre. Par conséquent, vous ne pouvez pas utiliser l'un sans l'autre.");
         }
 
         switch (Time) {
@@ -229,12 +234,83 @@ module.exports = {
                                     )
                                     .setFooter({ text: `${Time}・${ConvertMonthToName(Month)} ${Year}`});
                                 break;
+                            } case "drop": {
+                                Embed
+                                    .setTitle("**" + Player + "・Block Drop**")
+                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setThumbnail(Image.BLOCK_DROP)
+                                    .addFields(
+                                        { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
+                                        { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                        { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                        { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                        { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                        { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                        { name: "**Morts**", value: `\`${result.deaths}\``, inline: true },
+                                        { name: "**Blocs détruits**", value: `\`${result.blocks_destroyed}\``, inline: true },
+                                        { name: "**Pouvoir récoltés**", value: `\`${result.powerups_collected}\``, inline: true },
+                                        { name: "**Plumes utilitsées**", value: `\`${result.vaults_used}\``, inline: true }
+                                    )
+                                    .setFooter({ text: `${Time}・${ConvertMonthToName(Month)} ${Year}`});
+                                break;
+                            } case "ground": {
+                                Embed
+                                    .setTitle("**" + Player + "・Ground Wars**")
+                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setThumbnail(Image.GROUND_WARS)
+                                    .addFields(
+                                        { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
+                                        { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                        { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                        { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                        { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                        { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                        { name: "**Morts**", value: `\`${result.deaths}\``, inline: true },
+                                        { name: "**Blocs détruits**", value: `\`${result.blocks_destroyed}\``, inline: true },
+                                        { name: "**Blocs posés**", value: `\`${result.blocks_placed}\``, inline: true },
+                                        { name: "**Projectiles tirés**", value: `\`${result.projectiles_fired}\``, inline: true }
+                                    )
+                                    .setFooter({ text: `${Time}・${ConvertMonthToName(Month)} ${Year}`});
+                                break;
+                            } case "hide": {
+                                Embed
+                                    .setTitle("**" + Player + "・Hide & Seek**")
+                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setThumbnail(Image.HIDE_AND_SEEK)
+                                    .addFields(
+                                        { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
+                                        { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                        { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                        { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                        { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                        { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                        { name: "**Morts**", value: `\`${result.deaths}\``, inline: true },
+                                        { name: "**Kills (cacheur)**", value: `\`${result.hider_kills}\``, inline: true },
+                                        { name: "**Kills (chercheur)**", value: `\`${result.seeker_kills}\``, inline: true }
+                                    )
+                                    .setFooter({ text: `${Time}・${ConvertMonthToName(Month)} ${Year}`});
+                                break;
+                            } case "build": {
+                                Embed
+                                    .setTitle("**" + Player + "・Just Build**")
+                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setThumbnail(Image.JUST_BUILD)
+                                    .addFields(
+                                        { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
+                                        { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                        { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                        { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                        { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                        { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                        { name: "**Notés Meh**", value: `\`${result.rating_meh_received}\``, inline: true },
+                                        { name: "**Notés Okay**", value: `\`${result.rating_okay_received}\``, inline: true },
+                                        { name: "**Notés Good**", value: `\`${result.rating_good_received}\``, inline: true },
+                                        { name: "**Notés Love**", value: `\`${result.rating_love_received}\``, inline: true }
+                                    )
+                                    .setFooter({ text: `${Time}・${ConvertMonthToName(Month)} ${Year}`});
+                                break;
                             }
                     }})
-                } else if (Year && !Month || !Year && Month) {
-                    Embed
-                        .setColor("RED")
-                        .setDescription("Les options `year` et `month` dépendent l'un de l'autre. Par conséquent, vous ne pouvez pas utiliser l'un sans l'autre.");
                 } else {
                     await Hive.getMonthlyPlayerStats(Player, Game).then(result => {
                         switch (Game) {
@@ -243,111 +319,193 @@ module.exports = {
                                     .setTitle("**" + Player + "・Treasure Wars**")
                                     .setURL("https://hivetools.app/search/" + Player)
                                     .setThumbnail(Image.TREASURE_WARS)
-                                    .setDescription("**__Période :__** " + Time + "\n\n" +
-                                        "**Classement :** " + result.human_index + "\n" +
-                                        "**EXP sans boost :** " + result.uncapped_xp + "\n" +
-                                        "**EXP :** " + result.xp + "\n" +
-                                        "**Parties jouées :** " + result.played + "\n" +
-                                        "**Parties gagnées :** " + result.victories + "\n" +
-                                        "**Parties perdues :** " + result.games_lost + "\n" +
-                                        "**Winrate :** " + result.win_percentage + "\n" +
-                                        "**Kills :** " + result.kills + "\n" +
-                                        "**Morts :** " + result.deaths + "\n" +
-                                        "**Final Kills :** " + result.final_kills + "\n" +
-                                        "**KDR :** " + result.kdr + "\n" +
-                                        "**FKDR :** " + result.fkdr + "\n" +
-                                        "**Trésors détruits :** " + result.treasure_destroyed
-                                    );
+                                    .addFields(
+                                        { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
+                                        { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                        { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                        { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                        { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                        { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                        { name: "**Kills**", value: `\`${result.kills}\``, inline: true },
+                                        { name: "**Final Kills**", value: `\`${result.final_kills}\``, inline: true },
+                                        { name: "**Morts**", value: `\`${result.deaths}\``, inline: true },
+                                        { name: "**KDR**", value: `\`${result.kdr}\``, inline: true },
+                                        { name: "**FKDR**", value: `\`${result.fkdr}\``, inline: true },
+                                        { name: "**Trésors détruits**", value: `\`${result.treasure_destroyed}\``, inline: true }
+                                    )
+                                    .setFooter({ text: `${Time}・Actuel`});
                                 break;
                             } case "dr": {
                                 Embed
                                     .setTitle("**" + Player + "・Death Run**")
                                     .setURL("https://hivetools.app/search/" + Player)
                                     .setThumbnail(Image.DEATH_RUN)
-                                    .setDescription("**__Période :__** " + Time + "\n\n" +
-                                        "**Classement :** " + result.human_index + "\n" +
-                                        "**EXP sans boost :** " + result.uncapped_xp + "\n" +
-                                        "**EXP :** " + result.xp + "\n" +
-                                        "**Parties jouées :** " + result.played + "\n" +
-                                        "**Parties gagnées :** " + result.victories + "\n" +
-                                        "**Parties perdues :** " + result.games_lost + "\n" +
-                                        "**Kills :** " + result.kills + "\n" +
-                                        "**Morts :** " + result.deaths + "\n" +
-                                        "**Checkpoints :** " + result.checkpoints
-                                    );
+                                    .addFields(
+                                        { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
+                                        { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                        { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                        { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                        { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                        { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                        { name: "**Kills**", value: `\`${result.kills}\``, inline: true },
+                                        { name: "**Morts**", value: `\`${result.deaths}\``, inline: true },
+                                        { name: "**Pièges activés**", value: `\`${result.activated}\``, inline: true },
+                                        { name: "**Checkpoints**", value: `\`${result.checkpoints}\``, inline: true }
+                                    )
+                                    .setFooter({ text: `${Time}・Actuel`});
                                 break;
                             } case "murder": {
                                 Embed
                                     .setTitle("**" + Player + "・Murder Mystery**")
                                     .setURL("https://hivetools.app/search/" + Player)
                                     .setThumbnail(Image.MURDER_MYSTERY)
-                                    .setDescription("**__Période :__** " + Time + "\n\n" +
-                                        "**Classement :** " + result.human_index + "\n" +
-                                        "**EXP sans boost :** " + result.uncapped_xp + "\n" +
-                                        "**EXP :** " + result.xp + "\n" +
-                                        "**Parties jouées :** " + result.played + "\n" +
-                                        "**Parties gagnées :** " + result.victories + "\n" +
-                                        "**Parties perdues :** " + result.games_lost + "\n" +
-                                        "**Assassins :** " + result.murders + "\n" +
-                                        "**Kills en assassin :** " + result.murderer_eliminations + "\n" +
-                                        "**Pièces amassées :** " + result.coins
-                                    );
+                                    .addFields(
+                                        { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
+                                        { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                        { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                        { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                        { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                        { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                        { name: "**Kills**", value: `\`${result.kills}\``, inline: true },
+                                        { name: "**Kills en murder**", value: `\`${result.murders}\``, inline: true },
+                                        { name: "**Kills du murder**", value: `\`${result.murderer_eliminations}\``, inline: true },
+                                        { name: "**Morts**", value: `\`${result.deaths}\``, inline: true },
+                                        { name: "**Pièces récoltées**", value: `\`${result.coins}\``, inline: true }
+                                    )
+                                    .setFooter({ text: `${Time}・Actuel`});
                                 break;
                             } case "sg": {
                                 Embed
                                     .setTitle("**" + Player + "・Survival Games**")
                                     .setURL("https://hivetools.app/search/" + Player)
                                     .setThumbnail(Image.SURVIVAL_GAMES)
-                                    .setDescription("**__Période :__** " + Time + "\n\n" +
-                                        "**Classement :** " + result.human_index + "\n" +
-                                        "**EXP sans boost :** " + result.uncapped_xp + "\n" +
-                                        "**EXP :** " + result.xp + "\n" +
-                                        "**Parties jouées :** " + result.played + "\n" +
-                                        "**Parties gagnées :** " + result.victories + "\n" +
-                                        "**Parties perdues :** " + result.games_lost + "\n" +
-                                        "**Winrate :** " + result.win_percentage + "\n" +
-                                        "**Kills :** " + result.kills + "\n" +
-                                        "**Coffres ouverts :** " + result.crates + "\n" +
-                                        "**Deathmatches :** " + result.deathmatches + "\n" +
-                                        "**Cows :** " + result.cows
-                                    );
+                                    .addFields(
+                                        { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
+                                        { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                        { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                        { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                        { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                        { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                        { name: "**Kills**", value: `\`${result.kills}\``, inline: true },
+                                        { name: "**Coffres ouverts**", value: `\`${result.crates}\``, inline: true },
+                                        { name: "**Deathmatches**", value: `\`${result.deathmatches}\``, inline: true },
+                                        { name: "**Cows**", value: `\`${result.cows}\``, inline: true }
+                                    )
+                                    .setFooter({ text: `${Time}・Actuel`});
                                 break;
                             } case "sky": {
                                 Embed
                                     .setTitle("**" + Player + "・Sky Wars**")
                                     .setURL("https://hivetools.app/search/" + Player)
                                     .setThumbnail(Image.SKY_WARS)
-                                    .setDescription("**__Période :__** " + Time + "\n\n" +
-                                        "**Classement :** " + result.human_index + "\n" +
-                                        "**EXP sans boost :** " + result.uncapped_xp + "\n" +
-                                        "**EXP :** " + result.xp + "\n" +
-                                        "**Parties jouées :** " + result.played + "\n" +
-                                        "**Parties gagnées :** " + result.victories + "\n" +
-                                        "**Parties perdues :** " + result.games_lost + "\n" +
-                                        "**Winrate :** " + result.win_percentage + "\n" +
-                                        "**Kills :** " + result.kills + "\n" +
-                                        "**Coffres mystères détruits :** " + result.mystery_chests_destroyed + "\n" +
-                                        "**Minerais minés :** " + result.ores_mined + "\n" +
-                                        "**Sorts utilités :** " + result.spells_used
-                                    );
+                                    .addFields(
+                                        { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
+                                        { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                        { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                        { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                        { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                        { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                        { name: "**Kills**", value: `\`${result.kills}\``, inline: true },
+                                        { name: "**Coffres mystères détruits**", value: `\`${result.mystery_chests_destroyed}\``, inline: true },
+                                        { name: "**Minerais minés**", value: `\`${result.ores_mined}\``, inline: true },
+                                        { name: "**Sorts lancés**", value: `\`${result.spells_used}\``, inline: true }
+                                    )
+                                    .setFooter({ text: `${Time}・Actuel`});
                                 break;
                             } case "ctf": {
                                 Embed
                                     .setTitle("**" + Player + "・Capture the Flag**")
                                     .setURL("https://hivetools.app/search/" + Player)
-                                    .setDescription("**__Période :__** " + Time + "\n\n" +
-                                        "**Classement :** " + result.human_index + "\n" +
-                                        "**EXP :** " + result.xp + "\n" +
-                                        "**Parties jouées :** " + result.played + "\n" +
-                                        "**Parties gagnées :** " + result.victories + "\n" +
-                                        "**Parties perdues :** " + result.games_lost + "\n" +
-                                        "**Winrate :** " + result.win_percentage + "\n" +
-                                        "**Kills :** " + result.kills + "\n" +
-                                        "**Morts :** " + result.deaths + "\n" +
-                                        "**Assistances :** " + result.assists + "\n" +
-                                        "**Flags capturés :** " + result.flags_captured + "\n" +
-                                        "**Flags retournés :** " + result.flags_returned
-                                    );
+                                    .setThumbnail(Image.CAPTURE_THE_FLAG)
+                                    .addFields(
+                                        { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
+                                        { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                        { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                        { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                        { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                        { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                        { name: "**Kills**", value: `\`${result.kills}\``, inline: true },
+                                        { name: "**Morts**", value: `\`${result.deaths}\``, inline: true },
+                                        { name: "**Assistances**", value: `\`${result.assists}\``, inline: true },
+                                        { name: "**Flags capturés**", value: `\`${result.flags_captured}\``, inline: true },
+                                        { name: "**Flags retournés**", value: `\`${result.flags_returned}\``, inline: true }
+                                    )
+                                    .setFooter({ text: `${Time}・Actuel`});
+                                break;
+                            } case "drop": {
+                                Embed
+                                    .setTitle("**" + Player + "・Block Drop**")
+                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setThumbnail(Image.BLOCK_DROP)
+                                    .addFields(
+                                        { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
+                                        { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                        { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                        { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                        { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                        { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                        { name: "**Morts**", value: `\`${result.deaths}\``, inline: true },
+                                        { name: "**Blocs détruits**", value: `\`${result.blocks_destroyed}\``, inline: true },
+                                        { name: "**Pouvoir récoltés**", value: `\`${result.powerups_collected}\``, inline: true },
+                                        { name: "**Plumes utilitsées**", value: `\`${result.vaults_used}\``, inline: true }
+                                    )
+                                    .setFooter({ text: `${Time}・Actuel`});
+                                break;
+                            } case "ground": {
+                                Embed
+                                    .setTitle("**" + Player + "・Ground Wars**")
+                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setThumbnail(Image.GROUND_WARS)
+                                    .addFields(
+                                        { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
+                                        { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                        { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                        { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                        { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                        { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                        { name: "**Morts**", value: `\`${result.deaths}\``, inline: true },
+                                        { name: "**Blocs détruits**", value: `\`${result.blocks_destroyed}\``, inline: true },
+                                        { name: "**Blocs posés**", value: `\`${result.blocks_placed}\``, inline: true },
+                                        { name: "**Projectiles tirés**", value: `\`${result.projectiles_fired}\``, inline: true }
+                                    )
+                                    .setFooter({ text: `${Time}・Actuel`});
+                                break;
+                            } case "hide": {
+                                Embed
+                                    .setTitle("**" + Player + "・Hide & Seek**")
+                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setThumbnail(Image.HIDE_AND_SEEK)
+                                    .addFields(
+                                        { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
+                                        { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                        { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                        { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                        { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                        { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                        { name: "**Morts**", value: `\`${result.deaths}\``, inline: true },
+                                        { name: "**Kills (cacheur)**", value: `\`${result.hider_kills}\``, inline: true },
+                                        { name: "**Kills (chercheur)**", value: `\`${result.seeker_kills}\``, inline: true }
+                                    )
+                                    .setFooter({ text: `${Time}・Actuel`});
+                                break;
+                            } case "build": {
+                                Embed
+                                    .setTitle("**" + Player + "・Just Build**")
+                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setThumbnail(Image.JUST_BUILD)
+                                    .addFields(
+                                        { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
+                                        { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                        { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                        { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                        { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                        { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                        { name: "**Notés Meh**", value: `\`${result.rating_meh_received}\``, inline: true },
+                                        { name: "**Notés Okay**", value: `\`${result.rating_okay_received}\``, inline: true },
+                                        { name: "**Notés Good**", value: `\`${result.rating_good_received}\``, inline: true },
+                                        { name: "**Notés Love**", value: `\`${result.rating_love_received}\``, inline: true }
+                                    )
+                                    .setFooter({ text: `${Time}・Actuel`});
                                 break;
                             }
                         }
@@ -357,116 +515,190 @@ module.exports = {
             }
 
             case "all": {
-                Time = "All-Time"
+                Time = "Permanent"
                 await Hive.getAllTimePlayerStats(Player, Game).then(result => {
                     switch (Game) {
                         case "wars": {
                             Embed
                                 .setTitle("**" + Player + "・Treasure Wars**")
                                 .setURL("https://hivetools.app/search/" + Player)
-                                .setThumbnail("https://cdn.discordapp.com/attachments/868676441087299635/979227497210216529/TreasureWars.png")
-                                .setDescription("**__Période :__** " + Time + "\n\n" +
-                                    "**EXP sans boost :** " + result.uncapped_xp + "\n" +
-                                    "**EXP :** " + result.xp + "\n" +
-                                    "**Parties jouées :** " + result.played + "\n" +
-                                    "**Parties gagnées :** " + result.victories + "\n" +
-                                    "**Parties perdues :** " + result.games_lost + "\n" +
-                                    "**Winrate :** " + result.win_percentage + "\n" +
-                                    "**Kills :** " + result.kills + "\n" +
-                                    "**Morts :** " + result.deaths + "\n" +
-                                    "**Final Kills :** " + result.final_kills + "\n" +
-                                    "**KDR :** " + result.kdr + "\n" +
-                                    "**FKDR :** " + result.fkdr + "\n" +
-                                    "**Trésors détruits :** " + result.treasure_destroyed
-                                );
+                                .setThumbnail(Image.TREASURE_WARS)
+                                .addFields(
+                                    { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                    { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                    { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                    { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                    { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                    { name: "**Kills**", value: `\`${result.kills}\``, inline: true },
+                                    { name: "**Final Kills**", value: `\`${result.final_kills}\``, inline: true },
+                                    { name: "**Morts**", value: `\`${result.deaths}\``, inline: true },
+                                    { name: "**KDR**", value: `\`${result.kdr}\``, inline: true },
+                                    { name: "**FKDR**", value: `\`${result.fkdr}\``, inline: true },
+                                    { name: "**Trésors détruits**", value: `\`${result.treasure_destroyed}\``, inline: true }
+                                )
+                                .setFooter({ text: `${Time}`});
                             break;
-                        }
-                        case "dr": {
+                        } case "dr": {
                             Embed
                                 .setTitle("**" + Player + "・Death Run**")
                                 .setURL("https://hivetools.app/search/" + Player)
-                                .setThumbnail("https://cdn.discordapp.com/attachments/868676441087299635/979227497449275452/DeathRun.png")
-                                .setDescription("**__Période :__** " + Time + "\n\n" +
-                                    "**EXP sans boost :** " + result.uncapped_xp + "\n" +
-                                    "**EXP :** " + result.xp + "\n" +
-                                    "**Parties jouées :** " + result.played + "\n" +
-                                    "**Parties gagnées :** " + result.victories + "\n" +
-                                    "**Parties perdues :** " + result.games_lost + "\n" +
-                                    "**Kills :** " + result.kills + "\n" +
-                                    "**Morts :** " + result.deaths + "\n" +
-                                    "**Checkpoints :** " + result.checkpoints
-                                );
+                                .setThumbnail(Image.DEATH_RUN)
+                                .addFields(
+                                    { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                    { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                    { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                    { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                    { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                    { name: "**Kills**", value: `\`${result.kills}\``, inline: true },
+                                    { name: "**Morts**", value: `\`${result.deaths}\``, inline: true },
+                                    { name: "**Pièges activés**", value: `\`${result.activated}\``, inline: true },
+                                    { name: "**Checkpoints**", value: `\`${result.checkpoints}\``, inline: true }
+                                )
+                                .setFooter({ text: `${Time}`});
                             break;
-                        }
-                        case "murder": {
+                        } case "murder": {
                             Embed
                                 .setTitle("**" + Player + "・Murder Mystery**")
                                 .setURL("https://hivetools.app/search/" + Player)
-                                .setThumbnail("https://cdn.discordapp.com/attachments/868676441087299635/979227496614604811/MurderMystery.png")
-                                .setDescription("**__Période :__** " + Time + "\n\n" +
-                                    "**EXP sans boost :** " + result.uncapped_xp + "\n" +
-                                    "**EXP :** " + result.xp + "\n" +
-                                    "**Parties jouées :** " + result.played + "\n" +
-                                    "**Parties gagnées :** " + result.victories + "\n" +
-                                    "**Parties perdues :** " + result.games_lost + "\n" +
-                                    "**Assassins :** " + result.murders + "\n" +
-                                    "**Kills en assassin :** " + result.murderer_eliminations + "\n" +
-                                    "**Pièces amassées :** " + result.coins
-                                );
+                                .setThumbnail(Image.MURDER_MYSTERY)
+                                .addFields(
+                                    { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                    { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                    { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                    { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                    { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                    { name: "**Kills en murder**", value: `\`${result.murders}\``, inline: true },
+                                    { name: "**Kills du murder**", value: `\`${result.murderer_eliminations}\``, inline: true },
+                                    { name: "**Morts**", value: `\`${result.deaths}\``, inline: true },
+                                    { name: "**Pièces récoltées**", value: `\`${result.coins}\``, inline: true }
+                                )
+                                .setFooter({ text: `${Time}`});
                             break;
-                        }
-                        case "sg": {
+                        } case "sg": {
                             Embed
                                 .setTitle("**" + Player + "・Survival Games**")
                                 .setURL("https://hivetools.app/search/" + Player)
-                                .setThumbnail("https://cdn.discordapp.com/attachments/868676441087299635/979227497000488980/SurvivalGames.png")
-                                .setDescription("**__Période :__** " + Time + "\n\n" +
-                                    "**EXP sans boost :** " + result.uncapped_xp + "\n" +
-                                    "**EXP :** " + result.xp + "\n" +
-                                    "**Parties jouées :** " + result.played + "\n" +
-                                    "**Parties gagnées :** " + result.victories + "\n" +
-                                    "**Parties perdues :** " + result.games_lost + "\n" +
-                                    "**Winrate :** " + result.win_percentage + "\n" +
-                                    "**Kills :** " + result.kills + "\n" +
-                                    "**Coffres ouverts :** " + result.crates + "\n" +
-                                    "**Deathmatches :** " + result.deathmatches + "\n" +
-                                    "**Cows :** " + result.cows
-                                );
+                                .setThumbnail(Image.SURVIVAL_GAMES)
+                                .addFields(
+                                    { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                    { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                    { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                    { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                    { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                    { name: "**Kills**", value: `\`${result.kills}\``, inline: true },
+                                    { name: "**Coffres**", value: `\`${result.crates}\``, inline: true },
+                                    { name: "**Deathmatches**", value: `\`${result.deathmatches}\``, inline: true },
+                                    { name: "**Cows**", value: `\`${result.cows}\``, inline: true }
+                                )
+                                .setFooter({ text: `${Time}`});
                             break;
-                        }
-                        case "sky": {
+                        } case "sky": {
                             Embed
                                 .setTitle("**" + Player + "・Sky Wars**")
                                 .setURL("https://hivetools.app/search/" + Player)
-                                .setThumbnail("https://cdn.discordapp.com/attachments/868676441087299635/979569526322659389/SkyWars.png")
-                                .setDescription("**__Période :__** " + Time + "\n\n" +
-                                    "**EXP sans boost :** " + result.uncapped_xp + "\n" +
-                                    "**EXP :** " + result.xp + "\n" +
-                                    "**Parties jouées :** " + result.played + "\n" +
-                                    "**Parties gagnées :** " + result.victories + "\n" +
-                                    "**Parties perdues :** " + result.games_lost + "\n" +
-                                    "**Winrate :** " + result.win_percentage + "\n" +
-                                    "**Kills :** " + result.kills + "\n" +
-                                    "**Coffres mystères détruits :** " + result.mystery_chests_destroyed + "\n" +
-                                    "**Minerais minés :** " + result.ores_mined + "\n" +
-                                    "**Sorts utilités :** " + result.spells_used
-                                );
+                                .setThumbnail(Image.SKY_WARS)
+                                .addFields(
+                                    { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                    { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                    { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                    { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                    { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                    { name: "**Kills**", value: `\`${result.kills}\``, inline: true },
+                                    { name: "**Coffres mystères**", value: `\`${result.mystery_chests_destroyed}\``, inline: true },
+                                    { name: "**Minerais**", value: `\`${result.ores_mined}\``, inline: true },
+                                    { name: "**Sorts**", value: `\`${result.spells_used}\``, inline: true }
+                                )
+                                .setFooter({ text: `${Time}`});
                             break;
-                        }
-                        case "ctf": {
+                        } case "ctf": {
                             Embed
                                 .setTitle("**" + Player + "・Capture the Flag**")
                                 .setURL("https://hivetools.app/search/" + Player)
-                                .setDescription("**__Période :__** " + Time + "\n\n" +
-                                    "**EXP :** " + result.xp + "\n" +
-                                    "**Parties jouées :** " + result.played + "\n" +
-                                    "**Parties gagnées :** " + result.victories + "\n" +
-                                    "**Kills :** " + result.kills + "\n" +
-                                    "**Morts :** " + result.deaths + "\n" +
-                                    "**Assistances :** " + result.assists + "\n" +
-                                    "**Flags capturés :** " + result.flags_captured + "\n" +
-                                    "**Flags retournés :** " + result.flags_returned
-                                );
+                                .setThumbnail(Image.CAPTURE_THE_FLAG)
+                                .addFields(
+                                    { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                    { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                    { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                    { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                    { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                    { name: "**Kills**", value: `\`${result.kills}\``, inline: true },
+                                    { name: "**Morts**", value: `\`${result.deaths}\``, inline: true },
+                                    { name: "**Assistances**", value: `\`${result.assists}\``, inline: true },
+                                    { name: "**Flags capturés**", value: `\`${result.flags_captured}\``, inline: true },
+                                    { name: "**Flags retournés**", value: `\`${result.flags_returned}\``, inline: true }
+                                )
+                                .setFooter({ text: `${Time}`});
+                            break;
+                        } case "drop": {
+                            Embed
+                                .setTitle("**" + Player + "・Block Drop**")
+                                .setURL("https://hivetools.app/search/" + Player)
+                                .setThumbnail(Image.BLOCK_DROP)
+                                .addFields(
+                                    { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                    { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                    { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                    { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                    { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                    { name: "**Morts**", value: `\`${result.deaths}\``, inline: true },
+                                    { name: "**Blocs**", value: `\`${result.blocks_destroyed}\``, inline: true },
+                                    { name: "**Pouvoirs**", value: `\`${result.powerups_collected}\``, inline: true },
+                                    { name: "**Plumes**", value: `\`${result.vaults_used}\``, inline: true }
+                                )
+                                .setFooter({ text: `${Time}`});
+                            break;
+                        } case "ground": {
+                            Embed
+                                .setTitle("**" + Player + "・Ground Wars**")
+                                .setURL("https://hivetools.app/search/" + Player)
+                                .setThumbnail(Image.GROUND_WARS)
+                                .addFields(
+                                    { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                    { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                    { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                    { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                    { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                    { name: "**Morts**", value: `\`${result.deaths}\``, inline: true },
+                                    { name: "**Blocs détruits**", value: `\`${result.blocks_destroyed}\``, inline: true },
+                                    { name: "**Blocs posés**", value: `\`${result.blocks_placed}\``, inline: true },
+                                    { name: "**Projectiles**", value: `\`${result.projectiles_fired}\``, inline: true }
+                                )
+                                .setFooter({ text: `${Time}`});
+                            break;
+                        } case "hide": {
+                            Embed
+                                .setTitle("**" + Player + "・Hide & Seek**")
+                                .setURL("https://hivetools.app/search/" + Player)
+                                .setThumbnail(Image.HIDE_AND_SEEK)
+                                .addFields(
+                                    { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                    { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                    { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                    { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                    { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                    { name: "**Morts**", value: `\`${result.deaths}\``, inline: true },
+                                    { name: "**Kills (cacheur)**", value: `\`${result.hider_kills}\``, inline: true },
+                                    { name: "**Kills (chercheur)**", value: `\`${result.seeker_kills}\``, inline: true }
+                                )
+                                .setFooter({ text: `${Time}`});
+                            break;
+                        } case "build": {
+                            Embed
+                                .setTitle("**" + Player + "・Just Build**")
+                                .setURL("https://hivetools.app/search/" + Player)
+                                .setThumbnail(Image.JUST_BUILD)
+                                .addFields(
+                                    { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
+                                    { name: "**Parties**", value: `\`${result.played}\``, inline: true },
+                                    { name: "**Victoires**", value: `\`${result.victories}\``, inline: true },
+                                    { name: "**Défaites**", value: `\`${result.games_lost}\``, inline: true },
+                                    { name: "**Winrate**", value: `\`${result.win_percentage}\``, inline: true },
+                                    { name: "**Notés Meh**", value: `\`${result.rating_meh_received}\``, inline: true },
+                                    { name: "**Notés Okay**", value: `\`${result.rating_okay_received}\``, inline: true },
+                                    { name: "**Notés Good**", value: `\`${result.rating_good_received}\``, inline: true },
+                                    { name: "**Notés Love**", value: `\`${result.rating_love_received}\``, inline: true }
+                                )
+                                .setFooter({ text: `${Time}`});
                             break;
                         }
                     }
