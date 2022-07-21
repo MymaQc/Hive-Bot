@@ -70,12 +70,11 @@ module.exports = {
     }],
     /**
      * @param interaction
-     * @returns {Promise<void>}
      */
     async execute(interaction) {
         const { options } = interaction;
 
-        const Player = options.getString("player");
+        let Player = options.getString("player");
         const Game = options.getString("game");
         let Time = options.getString("time");
         const Year = options.getString("year");
@@ -84,7 +83,10 @@ module.exports = {
         let Embed = new MessageEmbed()
             .setColor("GOLD")
 
-        console.log("[HIVE] Commande effectuée -> user:" + Player + " game:" + Game + " time:" + Time + " year:" + Year + " month:" + Month)
+        let errorEmbed = new MessageEmbed()
+            .setColor("RED")
+
+        console.log("[HIVE] Commande effectuée -> user:" + Player.replace("%20", " ") + " game:" + Game + " time:" + Time + " year:" + Year + " month:" + Month)
 
         function ConvertMonthToName(Month) {
             switch (Month) {
@@ -104,10 +106,26 @@ module.exports = {
             return Month
         }
 
+        if (Time === "all" && Month && Year) {
+            errorEmbed
+                .setDescription("Les options `year` et `month` ne sont pas utilisables lorsque le timescope `Permanent` est sélectionné.");
+            return interaction.reply({ embeds: [errorEmbed] });
+        }
+
+        if (Time === "all" && Year) {
+            errorEmbed
+                .setDescription("L'option `year` n'est pas utilisable lorsque le timescope `Permanent` est sélectionné.");
+            return interaction.reply({ embeds: [errorEmbed] });
+        } else if (Time === "all" && Month) {
+            errorEmbed
+                .setDescription("L'option `month` n'est pas utilisable lorsque le timescope `Permanent` est sélectionné.");
+            return interaction.reply({ embeds: [errorEmbed] });
+        }
+
         if (Year && !Month || !Year && Month) {
-            Embed
-                .setColor("RED")
+            errorEmbed
                 .setDescription("Les options `year` et `month` dépendent l'un de l'autre. Par conséquent, vous ne pouvez pas utiliser l'un sans l'autre.");
+            return interaction.reply({ embeds: [errorEmbed] });
         }
 
         switch (Time) {
@@ -118,8 +136,8 @@ module.exports = {
                         switch (Game) {
                             case "wars": {
                                 Embed
-                                    .setTitle("**" + Player + "・Treasure Wars**")
-                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setTitle("**" + Player.replace("%20", " ") + "・Treasure Wars**")
+                                    .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                     .setThumbnail(Image.TREASURE_WARS)
                                     .addFields(
                                         { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
@@ -139,8 +157,8 @@ module.exports = {
                                 break;
                             } case "dr": {
                                 Embed
-                                    .setTitle("**" + Player + "・Death Run**")
-                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setTitle("**" + Player.replace("%20", " ") + "・Death Run**")
+                                    .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                     .setThumbnail(Image.DEATH_RUN)
                                     .addFields(
                                         { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
@@ -158,8 +176,8 @@ module.exports = {
                                 break;
                             } case "murder": {
                                 Embed
-                                    .setTitle("**" + Player + "・Murder Mystery**")
-                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setTitle("**" + Player.replace("%20", " ") + "・Murder Mystery**")
+                                    .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                     .setThumbnail(Image.MURDER_MYSTERY)
                                     .addFields(
                                         { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
@@ -178,8 +196,8 @@ module.exports = {
                                 break;
                             } case "sg": {
                                 Embed
-                                    .setTitle("**" + Player + "・Survival Games**")
-                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setTitle("**" + Player.replace("%20", " ") + "・Survival Games**")
+                                    .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                     .setThumbnail(Image.SURVIVAL_GAMES)
                                     .addFields(
                                         { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
@@ -197,8 +215,8 @@ module.exports = {
                                 break;
                             } case "sky": {
                                 Embed
-                                    .setTitle("**" + Player + "・Sky Wars**")
-                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setTitle("**" + Player.replace("%20", " ") + "・Sky Wars**")
+                                    .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                     .setThumbnail(Image.SKY_WARS)
                                     .addFields(
                                         { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
@@ -216,8 +234,8 @@ module.exports = {
                                 break;
                             } case "ctf": {
                                 Embed
-                                    .setTitle("**" + Player + "・Capture the Flag**")
-                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setTitle("**" + Player.replace("%20", " ") + "・Capture the Flag**")
+                                    .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                     .setThumbnail(Image.CAPTURE_THE_FLAG)
                                     .addFields(
                                         { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
@@ -236,8 +254,8 @@ module.exports = {
                                 break;
                             } case "drop": {
                                 Embed
-                                    .setTitle("**" + Player + "・Block Drop**")
-                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setTitle("**" + Player.replace("%20", " ") + "・Block Drop**")
+                                    .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                     .setThumbnail(Image.BLOCK_DROP)
                                     .addFields(
                                         { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
@@ -255,8 +273,8 @@ module.exports = {
                                 break;
                             } case "ground": {
                                 Embed
-                                    .setTitle("**" + Player + "・Ground Wars**")
-                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setTitle("**" + Player.replace("%20", " ") + "・Ground Wars**")
+                                    .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                     .setThumbnail(Image.GROUND_WARS)
                                     .addFields(
                                         { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
@@ -274,8 +292,8 @@ module.exports = {
                                 break;
                             } case "hide": {
                                 Embed
-                                    .setTitle("**" + Player + "・Hide & Seek**")
-                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setTitle("**" + Player.replace("%20", " ") + "・Hide & Seek**")
+                                    .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                     .setThumbnail(Image.HIDE_AND_SEEK)
                                     .addFields(
                                         { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
@@ -292,8 +310,8 @@ module.exports = {
                                 break;
                             } case "build": {
                                 Embed
-                                    .setTitle("**" + Player + "・Just Build**")
-                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setTitle("**" + Player.replace("%20", " ") + "・Just Build**")
+                                    .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                     .setThumbnail(Image.JUST_BUILD)
                                     .addFields(
                                         { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
@@ -316,8 +334,8 @@ module.exports = {
                         switch (Game) {
                             case "wars": {
                                 Embed
-                                    .setTitle("**" + Player + "・Treasure Wars**")
-                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setTitle("**" + Player.replace("%20", " ") + "・Treasure Wars**")
+                                    .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                     .setThumbnail(Image.TREASURE_WARS)
                                     .addFields(
                                         { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
@@ -337,8 +355,8 @@ module.exports = {
                                 break;
                             } case "dr": {
                                 Embed
-                                    .setTitle("**" + Player + "・Death Run**")
-                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setTitle("**" + Player.replace("%20", " ") + "・Death Run**")
+                                    .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                     .setThumbnail(Image.DEATH_RUN)
                                     .addFields(
                                         { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
@@ -356,8 +374,8 @@ module.exports = {
                                 break;
                             } case "murder": {
                                 Embed
-                                    .setTitle("**" + Player + "・Murder Mystery**")
-                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setTitle("**" + Player.replace("%20", " ") + "・Murder Mystery**")
+                                    .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                     .setThumbnail(Image.MURDER_MYSTERY)
                                     .addFields(
                                         { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
@@ -376,8 +394,8 @@ module.exports = {
                                 break;
                             } case "sg": {
                                 Embed
-                                    .setTitle("**" + Player + "・Survival Games**")
-                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setTitle("**" + Player.replace("%20", " ") + "・Survival Games**")
+                                    .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                     .setThumbnail(Image.SURVIVAL_GAMES)
                                     .addFields(
                                         { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
@@ -395,8 +413,8 @@ module.exports = {
                                 break;
                             } case "sky": {
                                 Embed
-                                    .setTitle("**" + Player + "・Sky Wars**")
-                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setTitle("**" + Player.replace("%20", " ") + "・Sky Wars**")
+                                    .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                     .setThumbnail(Image.SKY_WARS)
                                     .addFields(
                                         { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
@@ -414,8 +432,8 @@ module.exports = {
                                 break;
                             } case "ctf": {
                                 Embed
-                                    .setTitle("**" + Player + "・Capture the Flag**")
-                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setTitle("**" + Player.replace("%20", " ") + "・Capture the Flag**")
+                                    .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                     .setThumbnail(Image.CAPTURE_THE_FLAG)
                                     .addFields(
                                         { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
@@ -434,8 +452,8 @@ module.exports = {
                                 break;
                             } case "drop": {
                                 Embed
-                                    .setTitle("**" + Player + "・Block Drop**")
-                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setTitle("**" + Player.replace("%20", " ") + "・Block Drop**")
+                                    .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                     .setThumbnail(Image.BLOCK_DROP)
                                     .addFields(
                                         { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
@@ -453,8 +471,8 @@ module.exports = {
                                 break;
                             } case "ground": {
                                 Embed
-                                    .setTitle("**" + Player + "・Ground Wars**")
-                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setTitle("**" + Player.replace("%20", " ") + "・Ground Wars**")
+                                    .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                     .setThumbnail(Image.GROUND_WARS)
                                     .addFields(
                                         { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
@@ -472,8 +490,8 @@ module.exports = {
                                 break;
                             } case "hide": {
                                 Embed
-                                    .setTitle("**" + Player + "・Hide & Seek**")
-                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setTitle("**" + Player.replace("%20", " ") + "・Hide & Seek**")
+                                    .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                     .setThumbnail(Image.HIDE_AND_SEEK)
                                     .addFields(
                                         { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
@@ -490,8 +508,8 @@ module.exports = {
                                 break;
                             } case "build": {
                                 Embed
-                                    .setTitle("**" + Player + "・Just Build**")
-                                    .setURL("https://hivetools.app/search/" + Player)
+                                    .setTitle("**" + Player.replace("%20", " ") + "・Just Build**")
+                                    .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                     .setThumbnail(Image.JUST_BUILD)
                                     .addFields(
                                         { name: "**Classement**", value: `\`${result.human_index}\``, inline: true },
@@ -520,8 +538,8 @@ module.exports = {
                     switch (Game) {
                         case "wars": {
                             Embed
-                                .setTitle("**" + Player + "・Treasure Wars**")
-                                .setURL("https://hivetools.app/search/" + Player)
+                                .setTitle("**" + Player.replace("%20", " ") + "・Treasure Wars**")
+                                .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                 .setThumbnail(Image.TREASURE_WARS)
                                 .addFields(
                                     { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
@@ -540,8 +558,8 @@ module.exports = {
                             break;
                         } case "dr": {
                             Embed
-                                .setTitle("**" + Player + "・Death Run**")
-                                .setURL("https://hivetools.app/search/" + Player)
+                                .setTitle("**" + Player.replace("%20", " ") + "・Death Run**")
+                                .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                 .setThumbnail(Image.DEATH_RUN)
                                 .addFields(
                                     { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
@@ -558,8 +576,8 @@ module.exports = {
                             break;
                         } case "murder": {
                             Embed
-                                .setTitle("**" + Player + "・Murder Mystery**")
-                                .setURL("https://hivetools.app/search/" + Player)
+                                .setTitle("**" + Player.replace("%20", " ") + "・Murder Mystery**")
+                                .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                 .setThumbnail(Image.MURDER_MYSTERY)
                                 .addFields(
                                     { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
@@ -576,8 +594,8 @@ module.exports = {
                             break;
                         } case "sg": {
                             Embed
-                                .setTitle("**" + Player + "・Survival Games**")
-                                .setURL("https://hivetools.app/search/" + Player)
+                                .setTitle("**" + Player.replace("%20", " ") + "・Survival Games**")
+                                .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                 .setThumbnail(Image.SURVIVAL_GAMES)
                                 .addFields(
                                     { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
@@ -594,8 +612,8 @@ module.exports = {
                             break;
                         } case "sky": {
                             Embed
-                                .setTitle("**" + Player + "・Sky Wars**")
-                                .setURL("https://hivetools.app/search/" + Player)
+                                .setTitle("**" + Player.replace("%20", " ") + "・Sky Wars**")
+                                .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                 .setThumbnail(Image.SKY_WARS)
                                 .addFields(
                                     { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
@@ -612,8 +630,8 @@ module.exports = {
                             break;
                         } case "ctf": {
                             Embed
-                                .setTitle("**" + Player + "・Capture the Flag**")
-                                .setURL("https://hivetools.app/search/" + Player)
+                                .setTitle("**" + Player.replace("%20", " ") + "・Capture the Flag**")
+                                .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                 .setThumbnail(Image.CAPTURE_THE_FLAG)
                                 .addFields(
                                     { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
@@ -631,8 +649,8 @@ module.exports = {
                             break;
                         } case "drop": {
                             Embed
-                                .setTitle("**" + Player + "・Block Drop**")
-                                .setURL("https://hivetools.app/search/" + Player)
+                                .setTitle("**" + Player.replace("%20", " ") + "・Block Drop**")
+                                .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                 .setThumbnail(Image.BLOCK_DROP)
                                 .addFields(
                                     { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
@@ -649,8 +667,8 @@ module.exports = {
                             break;
                         } case "ground": {
                             Embed
-                                .setTitle("**" + Player + "・Ground Wars**")
-                                .setURL("https://hivetools.app/search/" + Player)
+                                .setTitle("**" + Player.replace("%20", " ") + "・Ground Wars**")
+                                .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                 .setThumbnail(Image.GROUND_WARS)
                                 .addFields(
                                     { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
@@ -667,8 +685,8 @@ module.exports = {
                             break;
                         } case "hide": {
                             Embed
-                                .setTitle("**" + Player + "・Hide & Seek**")
-                                .setURL("https://hivetools.app/search/" + Player)
+                                .setTitle("**" + Player.replace("%20", " ") + "・Hide & Seek**")
+                                .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                 .setThumbnail(Image.HIDE_AND_SEEK)
                                 .addFields(
                                     { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
@@ -684,8 +702,8 @@ module.exports = {
                             break;
                         } case "build": {
                             Embed
-                                .setTitle("**" + Player + "・Just Build**")
-                                .setURL("https://hivetools.app/search/" + Player)
+                                .setTitle("**" + Player.replace("%20", " ") + "・Just Build**")
+                                .setURL("https://hivetools.app/search/" + Player.replace(" ", "%20"))
                                 .setThumbnail(Image.JUST_BUILD)
                                 .addFields(
                                     { name: "**EXP**", value: `\`${result.xp}\``, inline: true },
@@ -705,7 +723,7 @@ module.exports = {
                 })
             }
         }
-    
+
         interaction.reply({embeds: [Embed]});
     }
 }
