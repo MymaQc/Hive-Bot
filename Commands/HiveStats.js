@@ -86,8 +86,6 @@ module.exports = {
         let errorEmbed = new MessageEmbed()
             .setColor("RED")
 
-        console.log("[HIVE] Commande effectuée -> user:" + Player.replace("%20", " ") + " game:" + Game + " time:" + Time + " year:" + Year + " month:" + Month)
-
         function ConvertMonthToName(Month) {
             switch (Month) {
                 case "01": { Month = "Janvier"; break; }
